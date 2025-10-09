@@ -6,8 +6,11 @@ var ctx = canvas.getContext("2d")
 var width = window.innerWidth
 var height = window.innerHeight
 var renWidth = height / 16 * 9
+const pageIcons = 4
+const iconSpacing = 8
 const fps = 60
 const img = new Image
+const icons = [2.5, 5, 1, 2.5]
 ctx.imageSmoothingEnabled = false
 
 img.src = "System/wallpapers/wallpaper_1.jfif"
@@ -22,6 +25,7 @@ setInterval(() => {
     canvas.width = renWidth
 
     //Home button
+    var iconSize = renWidth/pageIcons-renWidth/(100/iconSpacing)
     ctx.drawImage(img, 0, 0, renWidth, height)
     ctx.beginPath();
     ctx.arc(renWidth / 2, height - 35, 10, 0, 2 * Math.PI);
@@ -32,6 +36,29 @@ setInterval(() => {
     ctx.strokeStyle = '#ffffffff';
     ctx.stroke();
 
+    //Icons
+    ctx.beginPath()
+    for (let x = 1; x < 4; x++) {
+         for (let y = 1; y < 5; y++) {
+       
+    } 
+    }
+    ctx.roundRect(renWidth/2-(iconSize/2)*2.5+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2-(iconSize/2)*5+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2+(iconSize/2)*2.5+iconSpacing, height-670, iconSize, iconSize, 10);
+
+    ctx.roundRect(renWidth/2-(iconSize/2)*2.5+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2-(iconSize/2)*5+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2+iconSpacing, height-670, iconSize, iconSize, 10);
+    ctx.roundRect(renWidth/2+(iconSize/2)*2.5+iconSpacing, height-670+iconSize/2*2.5, iconSize, iconSize, 10);
+
+    //Draw 'em
+    ctx.fillStyle = '#eed35bff'
+    ctx.strokeStyle = '#eeae5bff'
+    ctx.lineWidth = 3
+    ctx.fill()
+    ctx.stroke()
 
 }, 1000 / fps);
 
