@@ -1,0 +1,9 @@
+#screen{
+    background-color: black;
+    align-self: center;
+}
+body{
+    padding: 0;
+    margin: 0;
+    background-color: rgb(0, 0, 0);
+}
