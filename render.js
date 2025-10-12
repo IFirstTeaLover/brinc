@@ -6,6 +6,7 @@ var ctx = canvas.getContext("2d")
 var width = window.innerWidth
 var height = window.innerHeight
 var renWidth = height / 16 * 9
+var mult = 4
 const pageIcons = 4
 const fps = 60
 const img = new Image
@@ -36,9 +37,13 @@ setInterval(() => {
 
     //Icons
     ctx.beginPath()
-    for (let x = pageIcons; x > 0; x--) {
-        ctx.roundRect(iconSize*x-renWidth/4.43, 200, iconSize-renWidth/20, iconSize-renWidth/20, 15);
+     
+    for(let y = pageIcons + 2; y > 0; y--){
+        for (let x = pageIcons; x > 0; x--) {
+            ctx.roundRect((iconSize*x)/1.05-iconSize*1+(renWidth/(mult*pageIcons)), (iconSize*y)/1.05-iconSize*1.02+(renWidth/(mult*pageIcons)), iconSize-renWidth/(mult*pageIcons), iconSize-renWidth/(mult*pageIcons), 15);
+        }
     }
+
 
     //Draw 'em
     ctx.fillStyle = '#eed35bff'
