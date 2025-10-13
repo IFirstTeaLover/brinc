@@ -26,18 +26,10 @@ setInterval(() => {
     renWidth = height / 16 * 9
     canvas.height = height
     canvas.width = renWidth
+    ctx.drawImage(img, 0, 0, renWidth, height)
     var iconSize = renWidth / pageIcons
 
-    //Home button
-    ctx.drawImage(img, 0, 0, renWidth, height)
-    ctx.beginPath();
-    ctx.arc(renWidth / 2, height - 35, 10, 0, 2 * Math.PI);
-    ctx.lineWidth = 10;
-    ctx.strokeStyle = '#000000ff';
-    ctx.stroke();
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#ffffffff';
-    ctx.stroke();
+
 
     //Icons
     ctx.beginPath()
@@ -48,16 +40,14 @@ setInterval(() => {
         }
     }
 
-
-    //Draw 'em
     ctx.fillStyle = '#eed35bff'
     ctx.strokeStyle = '#eeae5bff'
     ctx.lineWidth = 3
     ctx.fill()
     ctx.stroke()
 
-    if (appAnim) {
-        console.log(appId)
+    //Open animation
+    if (appAnim==true){
         ctx.beginPath()
         if (appId < 100){
             ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId - 1].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000); 
@@ -67,9 +57,42 @@ setInterval(() => {
         ctx.lineWidth = 30
         ctx.fill()
         ctx.stroke()
-        animationSize += 60
+        if (animationSize < height*2){
+            animationSize += 60
+        }
     }
 
+    //Close animation
+    if(appAnim === "backwards"){
+        console.log("Hello world!")
+        ctx.beginPath()
+        if (appId < 100 && animationSize>0){
+            ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId - 1].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000); 
+        }
+        ctx.fillStyle = '#232323ff'
+        ctx.strokeStyle = '#0d0d0dff'
+        ctx.lineWidth = 30
+        ctx.fill()
+        ctx.stroke()
+        if (animationSize > 0){
+            console.log("ASD", animationSize)
+            animationSize -= 100
+        }
+        if (animationSize < 1){
+            appId = ""
+            inApp = false
+    }
+    }
+
+    //Home button
+    ctx.beginPath();
+    ctx.arc(renWidth / 2, height - 35, 10, 0, 2 * Math.PI);
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = '#000000ff';
+    ctx.stroke();
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = '#ffffffff';
+    ctx.stroke();
 }, 1000 / fps);
 
 elements.push({
@@ -98,16 +121,20 @@ function openApp(id) {
     appAnim = true
 }
 
+function closeApp(){
+    appAnim = "backwards"
+}
+
 canvas.addEventListener('click', function (event) {
     var x = event.pageX - canvasLeft
     var y = event.pageY - canvasTop
     var i = 1
     elements.forEach(function (element) {
-        console.log("HI")
         if (y > element.top && y < element.top + element.height
              && x > element.left && x < element.left + element.width
         ) {
             if (element.type == "home"){
+                closeApp()
             }else if (element.type == "icon"){
                 openApp(i)
             }
