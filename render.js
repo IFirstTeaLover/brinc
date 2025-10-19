@@ -15,17 +15,15 @@ const pageIcons = 4
 const fps = 60
 const img = new Image
 ctx.imageSmoothingEnabled = false
+
 function getConfig(parameter){ // fuck this shit just do it yourself
 fetch('System/sysConfig.br')
   .then(response => {
-    if (!response.ok) {
-      console.error("Failed to load config!");
-    }
-    console.log("Loaded config file:", response);
+    if (!response.ok) throw new Error("Failed to load config!")
     return response.json();
   })
-  .then(CONFIG => {
-    console.log("Parsed config:", CONFIG);
+  .then(data => {
+    img.src = data[wallpaper]
     console.log("Key:", CONFIG[parameter]);
     return CONFIG[parameter]
   })
@@ -36,7 +34,7 @@ fetch('System/sysConfig.br')
 }
 
 console.log("Paper of wall is", getConfig("wallpaper"))
-img.src = "System/wallpapers/wallpaper_2.jfif"
+//img.src = "System/wallpapers/wallpaper_2.jfif"
 
 //RENDER
 setInterval(() => {
