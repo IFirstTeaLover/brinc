@@ -24,8 +24,8 @@ fetch('System/sysConfig.br')
   })
   .then(data => {
     img.src = data["wallpaper"]
-    console.log("Key:", CONFIG[parameter]);
-    return CONFIG[parameter]
+    console.log("Key:", data[parameter]);
+    return data[parameter]
   })
   .catch(err => {
     console.error(err.message);
