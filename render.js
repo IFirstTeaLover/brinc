@@ -27,7 +27,6 @@ fetch('System/sysConfig.br')
   .then(data => {
     img.src = data["wallpaper"]
     console.log("Key:", data[parameter]);
-    isDev = data["dev"]
     return data[parameter]
   })
   .catch(err => {
