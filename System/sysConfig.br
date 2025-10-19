@@ -1,4 +1,4 @@
 {
-    wallpaper: "System/wallpapers/wallpaper_2.jfif",
-    isDone: false
+    "wallpaper": "System/wallpapers/wallpaper_1.jfif",
+    "isDone": false
 }
