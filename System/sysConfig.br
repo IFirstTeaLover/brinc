@@ -1,4 +1,5 @@
 {
     "wallpaper": "System/wallpapers/wallpaper_1.jfif",
-    "isDone": false
+    "isDone": false,
+    "dev":  false
 }

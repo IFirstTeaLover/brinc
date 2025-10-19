@@ -11,6 +11,8 @@ var appAnim = false
 var animationSize = 0
 var appId
 var inApp = false
+var iconAmount = 0
+var isDev = false
 const pageIcons = 4
 const fps = 60
 const img = new Image
@@ -24,8 +26,9 @@ fetch('System/sysConfig.br')
   })
   .then(data => {
     img.src = data["wallpaper"]
-    console.log("Key:", CONFIG[parameter]);
-    return CONFIG[parameter]
+    console.log("Key:", data[parameter]);
+    isDev = data["dev"]
+    return data[parameter]
   })
   .catch(err => {
     console.error(err.message);
@@ -60,7 +63,7 @@ setInterval(() => {
         }
     }
 
-    ctx.lineWidth = 3
+    ctx.lineWidth = height/231
     ctx.fill()
     ctx.stroke()
 
@@ -69,7 +72,7 @@ setInterval(() => {
     if (appAnim == true || inApp == true && !appAnim == "backwards") {
         ctx.beginPath()
         if (appId < 100) {
-            ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId - 1].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000);
+            ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000);
         }
         ctx.fillStyle = '#232323ff'
         ctx.strokeStyle = '#0d0d0dff'
@@ -85,7 +88,7 @@ setInterval(() => {
     if (appAnim === "backwards") {
         ctx.beginPath()
         if (appId < 100 && animationSize > 0) {
-            ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId - 1].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000);
+            ctx.roundRect(elements[appId].left - animationSize / 2, elements[appId].top - animationSize / 2, elements[appId].width + animationSize, elements[appId].height + animationSize, 1000);
         }
         ctx.fillStyle = '#232323ff'
         ctx.strokeStyle = '#0d0d0dff'
@@ -101,17 +104,28 @@ setInterval(() => {
             inApp = false
         }
     }
+
+    if (isDev){
+        var iconSize = renWidth / pageIcons
+        for (let x = 0; x < pageIcons; x++) {
+            for (let y = 0; y < pageIcons + 2; y++) {
+                ctx.fillRect((iconSize * (x+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)),(iconSize * (y+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),iconSize - renWidth / (mult * pageIcons),iconSize - renWidth / (mult * pageIcons))
+                ctx.fillStyle = '#ff0000ff'
+                ctx.strokeStyle = '#000000ff'   
+    }
+}
+    }
     ctx.fillStyle = "#34343487"
-    ctx.fillRect(-renWidth / 2, height - 50, renWidth * 2, 100)
+    ctx.fillRect(-renWidth / 2, height - height/14, renWidth * 2, 100)
     ctx.fill
 
     //Home button
     ctx.beginPath();
-    ctx.arc(renWidth / 2, height - 25, 10, 0, 2 * Math.PI);
-    ctx.lineWidth = 15;
+    ctx.arc(renWidth / 2, height - height/28, height/69.5, 0, 2 * Math.PI);
+    ctx.lineWidth = height/46;
     ctx.strokeStyle = '#000000ff';
     ctx.stroke();
-    ctx.lineWidth = 8;
+    ctx.lineWidth = height/87;
     ctx.strokeStyle = '#ffffffff';
     ctx.stroke();
 }, 1000 / fps);
@@ -124,15 +138,16 @@ elements.push({
     type: "home"
 })
 var iconSize = renWidth / pageIcons
-for (let x = 0; x < pageIcons + 3; x++) {
-    for (let y = 0; y < pageIcons + 1; y++) {
+for (let x = 0; x < pageIcons; x++) {
+    for (let y = 0; y < pageIcons + 2; y++) {
         elements.push({
             width: iconSize - renWidth / (mult * pageIcons),
             height: iconSize - renWidth / (mult * pageIcons),
-            top: (iconSize * x) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),
-            left: (iconSize * y) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)),
+            top: (iconSize * (y+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),
+            left: (iconSize * (x+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)),
             type: "icon"
         })
+        iconAmount += 1
     }
 }
 function openApp(id) {
