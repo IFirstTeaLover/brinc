@@ -16,14 +16,14 @@ const fps = 60
 const img = new Image
 ctx.imageSmoothingEnabled = false
 
-function getConfig(parameter){ // fuck this shit just do it yourself
+function getConfig(parameter){
 fetch('System/sysConfig.br')
   .then(response => {
     if (!response.ok) throw new Error("Failed to load config!")
     return response.json();
   })
   .then(data => {
-    img.src = data[wallpaper]
+    img.src = data["wallpaper"]
     console.log("Key:", CONFIG[parameter]);
     return CONFIG[parameter]
   })
