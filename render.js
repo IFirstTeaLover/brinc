@@ -13,6 +13,7 @@ var appId
 var inApp = false
 var iconAmount = 0
 var isDev = false
+var data
 const pageIcons = 4
 const fps = 60
 const img = new Image
@@ -33,10 +34,11 @@ fetch('System/sysConfig.br')
     console.error(err.message);
     return null
   });
+  return false
+
 }
 
 console.log("Paper of wall is", getConfig("wallpaper"))
-//img.src = "System/wallpapers/wallpaper_2.jfif"
 
 //RENDER
 setInterval(() => {
@@ -48,8 +50,6 @@ setInterval(() => {
     canvas.width = renWidth
     ctx.drawImage(img, 0, 0, renWidth, height)
     var iconSize = renWidth / pageIcons
-
-
 
     //Icons
     ctx.beginPath()
@@ -112,8 +112,21 @@ setInterval(() => {
                 ctx.fillStyle = '#ff0000ff'
                 ctx.strokeStyle = '#000000ff'   
     }
-}
+        }
     }
+
+    //Remote Drawing
+    function createRectAt(x, y, w, h, c, s, l, f) {
+        ctx.beginPath()
+        ctx.fillStyle = c
+        ctx.strokeStyle = s
+        ctx.lineWidth = l
+        ctx.rect(x, y, w, h)
+        if (f) ctx.fill()
+        ctx.stroke()
+    }
+    createRectAt(100, 100, 100, 100, "#eb4034", "#5634ebff",10,true)
+
     ctx.fillStyle = "#34343487"
     ctx.fillRect(-renWidth / 2, height - height/14, renWidth * 2, 100)
     ctx.fill
