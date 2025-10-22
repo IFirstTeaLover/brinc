@@ -2,6 +2,7 @@ var canvas = document.getElementById("screen")
 var canvasLeft = canvas.offsetLeft + canvas.clientLeft
 var canvasTop = canvas.offsetTop + canvas.clientTop
 var elements = []
+var icons = []
 var ctx = canvas.getContext("2d")
 var width = window.innerWidth
 var height = window.innerHeight
@@ -54,13 +55,18 @@ setInterval(() => {
     //Icons
     ctx.beginPath()
 
-    for (let y = pageIcons + 2; y > 0; y--) {
-        for (let x = pageIcons; x > 0; x--) {
-            ctx.roundRect((iconSize * x) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * y) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), height/46);
-            ctx.fillStyle = '#edd156ff'
-            ctx.strokeStyle = '#eeae5bff'
+    let x = 0
+    let y = 1
+    icons.forEach(function () {
+        x++
+        if (x > pageIcons){
+            x = 1
+            y++
         }
-    }
+        ctx.roundRect((iconSize * x) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * y) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), height/46);
+        ctx.fillStyle = '#edd156ff'
+        ctx.strokeStyle = '#eeae5bff'
+    })
 
     ctx.lineWidth = height/231
     ctx.fill()
@@ -104,11 +110,12 @@ setInterval(() => {
         }
     }
 
+    //debugging
     if (isDev){
         var iconSize = renWidth / pageIcons
         for (let x = 0; x < pageIcons; x++) {
             for (let y = 0; y < pageIcons + 2; y++) {
-                ctx.fillRect((iconSize * (x+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)),(iconSize * (y+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),iconSize - renWidth / (mult * pageIcons),iconSize - renWidth / (mult * pageIcons))
+                ctx.fillRect(iconSize - renWidth / (mult * pageIcons),iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
                 ctx.fillStyle = '#ff0000ff'
                 ctx.strokeStyle = '#000000ff'   
     }
@@ -149,19 +156,34 @@ elements.push({
     left: renWidth / 2 - 15,
     type: "home"
 })
+
 var iconSize = renWidth / pageIcons
-for (let x = 0; x < pageIcons; x++) {
-    for (let y = 0; y < pageIcons + 2; y++) {
-        elements.push({
-            width: iconSize - renWidth / (mult * pageIcons),
-            height: iconSize - renWidth / (mult * pageIcons),
-            top: (iconSize * (y+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),
-            left: (iconSize * (x+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)),
-            type: "icon"
-        })
-        iconAmount += 1
-    }
+
+addIcon(iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
+addIcon(iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
+addIcon(iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
+addIcon(iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
+addIcon(iconSize - renWidth / (mult * pageIcons),(iconSize * ((iconAmount % pageIcons)+1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)),(iconSize * ((Math.floor(iconAmount / pageIcons))+1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
+
+function addIcon(w, l, t) {
+    elements.push({
+        width: w,
+        height: w,
+        top: t,
+        left: l,
+        type: "icon"
+    })
+
+    icons.push({
+        width: w,
+        height: w,
+        top: t,
+        left: l,
+        type: "icon"
+    })
+    iconAmount++
 }
+
 function openApp(id) {
     if (!inApp) {
         appId = id - 1
