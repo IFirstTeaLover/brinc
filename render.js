@@ -56,7 +56,7 @@ setInterval(() => {
 
     for (let y = pageIcons + 2; y > 0; y--) {
         for (let x = pageIcons; x > 0; x--) {
-            ctx.roundRect((iconSize * x) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * y) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), 15);
+            ctx.roundRect((iconSize * x) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * y) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), height/46);
             ctx.fillStyle = '#edd156ff'
             ctx.strokeStyle = '#eeae5bff'
         }
@@ -75,11 +75,11 @@ setInterval(() => {
         }
         ctx.fillStyle = '#232323ff'
         ctx.strokeStyle = '#0d0d0dff'
-        ctx.lineWidth = 30
+        ctx.lineWidth = height/23
         ctx.fill()
         ctx.stroke()
         if (animationSize < height * 2) {
-            animationSize += 60
+            animationSize += height/11.6
         }
     }
 
@@ -91,11 +91,11 @@ setInterval(() => {
         }
         ctx.fillStyle = '#232323ff'
         ctx.strokeStyle = '#0d0d0dff'
-        ctx.lineWidth = 30
+        ctx.lineWidth = height/23
         ctx.fill()
         ctx.stroke()
         if (animationSize > 0) {
-            animationSize -= 100
+            animationSize -= height/6.9
         }
         if (animationSize < 1) {
             appAnim = false
@@ -125,7 +125,7 @@ setInterval(() => {
         if (f) ctx.fill()
         ctx.stroke()
     }
-    createRectAt(100, 100, 100, 100, "#eb4034", "#5634ebff",10,true)
+    //createRectAt(100, 100, 100, 100, "#eb4034", "#5634ebff",10,true)
 
     ctx.fillStyle = "#34343487"
     ctx.fillRect(-renWidth / 2, height - height/14, renWidth * 2, 100)
