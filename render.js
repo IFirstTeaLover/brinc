@@ -10,7 +10,7 @@ var renWidth = height / 16 * 9
 var mult = 3
 var appAnim = false
 var animationSize = 0
-var appId
+var appId, appName
 var inApp = false
 var iconAmount = 0
 var isDev = false
@@ -58,24 +58,24 @@ function drawIt() {
     let y = 1
     let i = 0
     ctx.lineWidth = height / 231
-    //if (!inApp){
-    icons.forEach(function () {
-        x++
-        if (x > pageIcons) {
-            x = 1
-            y++
-        }
-        ctx.fillStyle = icons[i].fc
-        ctx.strokeStyle = icons[i].sc
-        ctx.beginPath()
-        ctx.roundRect(icons[i].left, icons[i].top, iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), height / 46);
-        ctx.fill()
-        ctx.stroke()
+    if (!inApp) {
+        icons.forEach(function () {
+            x++
+            if (x > pageIcons) {
+                x = 1
+                y++
+            }
+            ctx.fillStyle = icons[i].fc
+            ctx.strokeStyle = icons[i].sc
+            ctx.beginPath()
+            ctx.roundRect(icons[i].left, icons[i].top, iconSize - renWidth / (mult * pageIcons), iconSize - renWidth / (mult * pageIcons), height / 46);
+            ctx.fill()
+            ctx.stroke()
 
-        i++
-    })
+            i++
+        })
 
-    //}
+    }
 
 
 
@@ -160,13 +160,14 @@ elements.push({
 
 var iconSize = renWidth / pageIcons
 
-addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), 'black', 'white')
+addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), 'black', 'white', "settings")
 addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), 'white', 'black')
 addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)), 'black', 'white')
 addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 1)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
 addIcon(iconSize - renWidth / (mult * pageIcons), (iconSize * ((iconAmount % pageIcons) + 2)) / 1.07 - iconSize * 1 + (renWidth / (mult * pageIcons)), (iconSize * ((Math.floor(iconAmount / pageIcons)) + 1)) / 1.07 - iconSize * 1.02 + (renWidth / (mult * pageIcons)))
 
-function addIcon(w, l, t, fc, sc) {
+
+function addIcon(w, l, t, fc, sc, ID) {
     elements.push({
         width: w,
         height: w,
@@ -180,22 +181,45 @@ function addIcon(w, l, t, fc, sc) {
         left: l,
         type: "icon",
         fc: fc,
-        sc: sc
+        sc: sc,
+        ID: ID
     })
     iconAmount++
 }
 
-function openApp(id) {
+function launchApp(id) {
     if (!inApp) {
+        const script = document.createElement("script")
         appId = id - 1
         animationSize = 0
+        appName = icons[id - 2].ID
         appAnim = true
         inApp = true
-    }
-}
+        console.log(appName)
+        script.src = "System/apps/" + appName + "/main.js"
+        script.id = "appScript"
+        document.body.appendChild(script)
+
+        script.onload = () => {
+            const interval = setInterval(() => {
+                if (animationSize > height * 0.5) {
+                    window[appName]();
+                    clearInterval(interval);
+                }
+                }, 2000/fps)
+            };
+        };
+
+};
+
+
+
 
 function closeApp() {
+    const script = document.getElementById("appScript")
     appAnim = "backwards"
+    stopApp()
+    script.remove()
 }
 
 canvas.addEventListener('click', function (event) {
@@ -203,14 +227,13 @@ canvas.addEventListener('click', function (event) {
     var y = event.pageY - canvasTop
     var i = 1
     elements.forEach(function (element) {
-        console.log("ok")
         if (y > element.top && y < element.top + element.height
             && x > element.left && x < element.left + element.width
         ) {
             if (element.type == "home") {
                 closeApp()
             } else if (element.type == "icon") {
-                openApp(i)
+                launchApp(i)
             }
         }
         i++
