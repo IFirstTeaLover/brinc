@@ -187,6 +187,39 @@ function addIcon(w, l, t, fc, sc, ID) {
     iconAmount++
 }
 
+function removeClassOfButtons(c){
+    var i = 0
+    elements.forEach(function () {
+        if (elements[i].type == c){
+            delete elements[i]
+        }
+        i++
+    })
+}
+
+function newButton(w,h,t,l,ty, u){
+        elements.push({
+        width: w,
+        height: h,
+        top: t,
+        left: l,
+        type: ty,
+        ident: u
+    })
+}
+
+function editButton(w,h,t,l,bId){
+    var index = 0
+    elements.forEach(function () {
+        if (elements[index].ident == bId){
+        console.log("HI")
+        index++
+    }
+    })
+
+
+}
+
 function launchApp(id) {
     if (!inApp) {
         const script = document.createElement("script")
@@ -202,7 +235,8 @@ function launchApp(id) {
 
         script.onload = () => {
             const interval = setInterval(() => {
-                if (animationSize > height * 0.5) {
+                height = window.innerHeight
+                if (animationSize > height * 2) {
                     window[appName]();
                     clearInterval(interval);
                 }
